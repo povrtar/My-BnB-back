@@ -32,7 +32,7 @@ private Location location;
 @Transient
 private List<LocalDate> availability;
 @ManyToOne(fetch = FetchType.EAGER)
-private Host host;
+private User host;
 @OneToMany(mappedBy="apartment",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 private List<Comment> comments;
 private Double pricePerNight;
@@ -45,7 +45,7 @@ List<Amenity> amenitiesForApartment;
 @OneToMany(mappedBy="apartment",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 List<Reservation> reservations;
 @ManyToMany
-private Set<Guest> guests;
+private Set<User> guests;
 
 public Apartment() {
 }
@@ -137,12 +137,7 @@ public List<Reservation> getReservations() {
 public void setReservations(List<Reservation> reservations) {
 	this.reservations=reservations;
 }
-public Host getHost() {
-	return host;
-}
-public void setHost(Host host) {
-	this.host = host;
-}
+
 public Double getPricePerNight() {
 	return pricePerNight;
 }
@@ -156,13 +151,20 @@ public List<Amenity> getAmenitiesForApartment() {
 public void setAmenitiesForApartment(List<Amenity> amenitiesForApartment) {
 	this.amenitiesForApartment = amenitiesForApartment;
 }
-public Set<Guest> getGuests() {
+
+
+public User getHost() {
+	return host;
+}
+public void setHost(User host) {
+	this.host = host;
+}
+public Set<User> getGuests() {
 	return guests;
 }
-public void setGuests(Set<Guest> guests) {
+public void setGuests(Set<User> guests) {
 	this.guests = guests;
 }
-
 public String getCheckInTime() {
 	return checkInTime;
 }

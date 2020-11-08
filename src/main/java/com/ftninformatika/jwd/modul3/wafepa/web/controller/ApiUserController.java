@@ -22,11 +22,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import com.ftninformatika.jwd.modul3.wafepa.model.Administrator;
-import com.ftninformatika.jwd.modul3.wafepa.service.AdministratorService;
-import com.ftninformatika.jwd.modul3.wafepa.service.GuestService;
-import com.ftninformatika.jwd.modul3.wafepa.service.HostService;
+import com.ftninformatika.jwd.modul3.wafepa.model.User;
+import com.ftninformatika.jwd.modul3.wafepa.service.UserService;
+import com.ftninformatika.jwd.modul3.wafepa.support.UserDtoToUser;
+import com.ftninformatika.jwd.modul3.wafepa.support.UserToUserDto;
 import com.ftninformatika.jwd.modul3.wafepa.web.dto.UserDto;
 import com.ftninformatika.jwd.modul3.wafepa.web.dto.UserPasswordChangeDto;
 import com.ftninformatika.jwd.modul3.wafepa.web.dto.UserRegistrationDto;
@@ -36,18 +35,14 @@ import com.ftninformatika.jwd.modul3.wafepa.web.dto.UserRegistrationDto;
 public class ApiUserController {
 	
 	@Autowired
-	private AdministratorService userService;
-	@Autowired
-	private GuestService guestService;
-	@Autowired
-	private HostService hostService;
+	private UserService userService;
+	
 	
 	@Autowired
-	private Converter<Administrator, UserDto> toDto;
+	private UserToUserDto toDto;
+	
 	@Autowired
-	private Converter<List<Administrator>, List<UserDto>> toDtoList;
-	@Autowired
-	private Converter<UserDto, Administrator> toUser;
+	private UserDtoToUser toUser;
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
@@ -62,7 +57,7 @@ public class ApiUserController {
 	@CrossOrigin(origins = "http://localhost:8080", maxAge = 3600) // moze i bez http:// dela
 	@GetMapping("/{id}")
 	public ResponseEntity<UserDto> get(@PathVariable Long id){
-		Optional<Administrator> user = userService.one(id);
+		Optional<User> user = userService.one(id);
 		
 		if(user.isPresent()) {
 			UserDto body = toDto.convert(user.get());
@@ -77,9 +72,9 @@ public class ApiUserController {
 	public ResponseEntity<List<UserDto>> get(
 			@RequestParam(defaultValue="0") int page){
 		
-		Page<Administrator> usersPage = userService.all(page);
-		List<Administrator> users = usersPage.getContent();
-		List<UserDto> body = toDtoList.convert(users);
+		Page<User> usersPage = userService.all(page);
+		List<User> users = usersPage.getContent();
+		List<UserDto> body = toDto.convert(users);
 		return new ResponseEntity<>(body, HttpStatus.OK);
 	}
 	
@@ -102,10 +97,10 @@ public class ApiUserController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
-		Administrator toAdd = toUser.convert(reqBody);
+		User toAdd = toUser.convert(reqBody);
 		toAdd.setPassword(reqBody.getPassword());
 		
-		Administrator persisted = userService.save(toAdd);
+		User persisted = userService.save(toAdd);
 		
 		UserDto respBody = toDto.convert(persisted);
 		return new ResponseEntity<>(respBody, HttpStatus.CREATED);
@@ -128,8 +123,8 @@ public class ApiUserController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
-		Administrator toEdit = toUser.convert(reqBody);
-		Administrator persisted = userService.save(toEdit);
+		User toEdit = toUser.convert(reqBody);
+		User persisted = userService.save(toEdit);
 		
 		UserDto respBody = toDto.convert(persisted);
 		return new ResponseEntity<>(respBody, HttpStatus.OK);
@@ -170,6 +165,18 @@ public class ApiUserController {
 				new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword());
 		Authentication authentication = authenticationManager.authenticate(authenticationToken);
 		SecurityContextHolder.getContext().setAuthentication(authentication);
+		try {
+			// Reload user details so we can generate token
+			UserDetails userDetails = userDetailsService.loadUserByUsername(dto.getUsername());
+			return ResponseEntity.ok(tokenUtils.generateToken(userDetails));
+		} catch (UsernameNotFoundException e) {
+			return ResponseEntity.notFound().build();
+		}
+	}
+	@PostMapping("/signIn")
+	public ResponseEntity signIn(@RequestBody LoginDto dto) {
+		
+		
 		try {
 			// Reload user details so we can generate token
 			UserDetails userDetails = userDetailsService.loadUserByUsername(dto.getUsername());

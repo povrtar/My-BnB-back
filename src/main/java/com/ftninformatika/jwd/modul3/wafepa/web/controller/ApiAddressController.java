@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ftninformatika.jwd.modul3.wafepa.model.Address;
-import com.ftninformatika.jwd.modul3.wafepa.model.Administrator;
+import com.ftninformatika.jwd.modul3.wafepa.model.User;
 import com.ftninformatika.jwd.modul3.wafepa.service.AddressService;
-import com.ftninformatika.jwd.modul3.wafepa.service.AdministratorService;
+import com.ftninformatika.jwd.modul3.wafepa.service.UserService;
 import com.ftninformatika.jwd.modul3.wafepa.support.AddressDtoToAddress;
 import com.ftninformatika.jwd.modul3.wafepa.support.AddressToAddressDto;
 import com.ftninformatika.jwd.modul3.wafepa.web.dto.AddressDto;

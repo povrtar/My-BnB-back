@@ -11,32 +11,32 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.ftninformatika.jwd.modul3.wafepa.model.Administrator;
-import com.ftninformatika.jwd.modul3.wafepa.repository.AdministratorRepository;
-import com.ftninformatika.jwd.modul3.wafepa.service.AdministratorService;
+import com.ftninformatika.jwd.modul3.wafepa.model.User;
+import com.ftninformatika.jwd.modul3.wafepa.repository.UserRepository;
+import com.ftninformatika.jwd.modul3.wafepa.service.UserService;
 import com.ftninformatika.jwd.modul3.wafepa.web.dto.UserPasswordChangeDto;
 
 @Service
-public class JpaAdministratorService implements AdministratorService{
+public class JpaAdministratorService implements UserService{
 
 	@Autowired
-	private AdministratorRepository adminRepository;
+	private UserRepository adminRepository;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
 	@Override
-	public Optional<Administrator> one(Long id) {
+	public Optional<User> one(Long id) {
 		return adminRepository.findById(id);
 	}
 
 	@Override
-	public List<Administrator> all() {
+	public List<User> all() {
 		return adminRepository.findAll();
 	}
 
 	@Override
-	public Administrator save(Administrator user) { return adminRepository.save(user); }
+	public User save(User user) { return adminRepository.save(user); }
 
 	@Override
 	public void delete(Long id) {
@@ -44,19 +44,19 @@ public class JpaAdministratorService implements AdministratorService{
 	}
 
 	@Override
-	public Optional<Administrator> byUsername(String username) {
+	public Optional<User> byUsername(String username) {
 		return adminRepository.findFirstByUsername(username);
 	}
 
 	@Override
 	public boolean changePassword(Long id, UserPasswordChangeDto changeDto) {
-		Optional<Administrator> result = adminRepository.findById(id);
+		Optional<User> result = adminRepository.findById(id);
 		
 		if(!result.isPresent()) {
 			throw new EntityNotFoundException();
 		}
 		
-		Administrator user = result.get();
+		User user = result.get();
 		
 		if(!user.getUsername().equals(changeDto.getUsername())
 			|| !user.getPassword().equals(changeDto.getOldPassword())){
@@ -74,7 +74,7 @@ public class JpaAdministratorService implements AdministratorService{
 	}
 
 	@Override
-	public Page<Administrator> all(int pageNum) {
+	public Page<User> all(int pageNum) {
 		return adminRepository.findAll(PageRequest.of(pageNum, 10));
 	}
 

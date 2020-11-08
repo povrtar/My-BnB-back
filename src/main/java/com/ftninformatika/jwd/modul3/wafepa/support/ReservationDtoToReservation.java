@@ -6,12 +6,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
-
 import com.ftninformatika.jwd.modul3.wafepa.model.Reservation;
 import com.ftninformatika.jwd.modul3.wafepa.model.ReservationStatus;
 import com.ftninformatika.jwd.modul3.wafepa.service.ApartmentService;
-import com.ftninformatika.jwd.modul3.wafepa.service.GuestService;
 import com.ftninformatika.jwd.modul3.wafepa.service.ReservationService;
+import com.ftninformatika.jwd.modul3.wafepa.service.UserService;
 import com.ftninformatika.jwd.modul3.wafepa.web.dto.ReservationDto;
 
 @Component
@@ -21,7 +20,7 @@ private ReservationService reservationService;
 @Autowired
 private ApartmentService apartmentService;
 @Autowired
-private GuestService guestService;
+private UserService guestService;
 
 	@Override
 	public Reservation convert(ReservationDto source) {

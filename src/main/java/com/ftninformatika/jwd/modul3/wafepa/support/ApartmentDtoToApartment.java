@@ -13,8 +13,8 @@ import com.ftninformatika.jwd.modul3.wafepa.model.Amenity;
 import com.ftninformatika.jwd.modul3.wafepa.model.Apartment;
 import com.ftninformatika.jwd.modul3.wafepa.repository.AmenityRepository;
 import com.ftninformatika.jwd.modul3.wafepa.service.ApartmentService;
-import com.ftninformatika.jwd.modul3.wafepa.service.HostService;
 import com.ftninformatika.jwd.modul3.wafepa.service.LocationService;
+import com.ftninformatika.jwd.modul3.wafepa.service.UserService;
 import com.ftninformatika.jwd.modul3.wafepa.web.dto.ApartmentDto;
 
 @Component
@@ -22,7 +22,7 @@ public class ApartmentDtoToApartment implements Converter<ApartmentDto,Apartment
 	@Autowired
 	private ApartmentService apartmentService;
 @Autowired
-private HostService hostService;
+private UserService userService;
 @Autowired
 private LocationService locationService;
 @Autowired
@@ -39,7 +39,7 @@ private AmenityDtoToAmenity toAmenity;
 		
 		
 		apart.setId(source.getId());
-		apart.setHost(hostService.one(source.getHostId()).get());
+		apart.setHost(userService.one(source.getHostId()).get());
 		apart.setCheckInTime(source.getCheckIn());
 		apart.setCheckOutTime(source.getCheckOut());
 		apart.setLocation(locationService.one(source.getLocationId()).get());

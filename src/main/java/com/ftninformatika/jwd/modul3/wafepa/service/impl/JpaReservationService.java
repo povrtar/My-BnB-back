@@ -1,6 +1,7 @@
 package com.ftninformatika.jwd.modul3.wafepa.service.impl;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,14 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
 import com.ftninformatika.jwd.modul3.wafepa.model.Apartment;
-import com.ftninformatika.jwd.modul3.wafepa.model.Guest;
 import com.ftninformatika.jwd.modul3.wafepa.model.Reservation;
+import com.ftninformatika.jwd.modul3.wafepa.model.User;
 import com.ftninformatika.jwd.modul3.wafepa.repository.ReservationRepository;
 import com.ftninformatika.jwd.modul3.wafepa.service.ApartmentService;
-import com.ftninformatika.jwd.modul3.wafepa.service.GuestService;
 import com.ftninformatika.jwd.modul3.wafepa.service.ReservationService;
+import com.ftninformatika.jwd.modul3.wafepa.service.UserService;
 @Service
 public class JpaReservationService implements ReservationService {
 @Autowired
@@ -23,7 +23,7 @@ private ReservationRepository reservationRepository;
 @Autowired
 private ApartmentService apartmentService;
 @Autowired
-private GuestService guestService;
+private UserService userService;
 
 @Override
 public Page<Reservation> all(int pageNum) {
@@ -43,15 +43,18 @@ public Reservation save(Reservation reservation) {
 	
 	Reservation persisted= reservationRepository.save(reservation);
 	List<Reservation> reservations=apartment.getReservations();
+	if(reservations==null) {
+		reservations=new ArrayList<>();
+	}
 	reservations.add(persisted);
 	apartment.setReservations(reservations);
 	apartmentService.save(apartment);
-	Guest guest=persisted.getGuest();
+	User guest=persisted.getGuest();
 	reservations.clear();
-	reservations=guest.getReservations();
+	reservations=guest.getUserReservations();
 	reservations.add(persisted);
-	guest.setReservations(reservations);
-	guestService.save(guest);
+	guest.setUserReservations(reservations);
+	userService.save(guest);
 	return persisted;
 }
 

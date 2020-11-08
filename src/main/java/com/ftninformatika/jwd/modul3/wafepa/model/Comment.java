@@ -13,7 +13,7 @@ public class Comment {
 @GeneratedValue(strategy = GenerationType.IDENTITY)
 private Long id;
 @ManyToOne(fetch = FetchType.LAZY)
-private Guest guest;
+private User guest;
 @ManyToOne(fetch=FetchType.LAZY)
 private Apartment apartment;
 private String text;
@@ -30,7 +30,7 @@ public Comment(Long id, String text, Long assessment) {
 	this.assessment = assessment;
 }
 
-public Comment(Guest guest, Apartment apartment, String text, Long assessment) {
+public Comment(User guest, Apartment apartment, String text, Long assessment) {
 	super();
 	this.guest = guest;
 	this.apartment = apartment;
@@ -46,11 +46,13 @@ public void setId(Long id) {
 	this.id = id;
 }
 
-public Guest getGuest() {
+
+
+public User getGuest() {
 	return guest;
 }
 
-public void setGuest(Guest guest) {
+public void setGuest(User guest) {
 	this.guest = guest;
 }
 

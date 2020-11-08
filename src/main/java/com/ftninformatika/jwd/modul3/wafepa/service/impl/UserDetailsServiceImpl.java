@@ -1,8 +1,8 @@
 package com.ftninformatika.jwd.modul3.wafepa.service.impl;
 
-import com.ftninformatika.jwd.modul3.wafepa.model.Administrator;
-import com.ftninformatika.jwd.modul3.wafepa.repository.AdministratorRepository;
-import com.ftninformatika.jwd.modul3.wafepa.service.AdministratorService;
+import com.ftninformatika.jwd.modul3.wafepa.model.User;
+import com.ftninformatika.jwd.modul3.wafepa.repository.UserRepository;
+import com.ftninformatika.jwd.modul3.wafepa.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,7 +21,7 @@ import java.util.List;
 public class UserDetailsServiceImpl implements UserDetailsService 
 {
   @Autowired
-  private AdministratorService userService;
+  private UserService userService;
 
   /* Zelimo da predstavimo korisnika preko UserDetails klase - nacina
   *  na koji Spring boot predstavlja korisnika. Ucitamo na osnovu korisnickog imena
@@ -31,7 +31,7 @@ public class UserDetailsServiceImpl implements UserDetailsService
   @Override
   @Transactional
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    Administrator user = userService.byUsername(username).orElse(null);
+    User user = userService.byUsername(username).orElse(null);
 
     if (user == null) {
       throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));

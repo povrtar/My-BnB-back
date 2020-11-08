@@ -36,7 +36,7 @@ public class AuthenticationTokenFilter extends UsernamePasswordAuthenticationFil
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		String authToken = httpRequest.getHeader("Authorization");
 		if(authToken != null) {
-			if(authToken.length() > 7)
+			            if(authToken.length() > 7)
 				authToken = authToken.substring(7);
 		}
 		String username = tokenUtils.getUsernameFromToken(authToken);

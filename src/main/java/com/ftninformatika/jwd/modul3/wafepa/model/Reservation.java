@@ -26,13 +26,13 @@ private LocalDate checkInDate;
 private Long nights;
 private Double totalPrice;
 @ManyToOne(fetch=FetchType.LAZY)
-private Guest guest;
+private User guest;
 @Enumerated(EnumType.STRING)
 private ReservationStatus reservationStatus;
 public Reservation() {
 	super();
 }
-public Reservation(Apartment apartment, LocalDate checkInDate, Long nights, Guest guest) {
+public Reservation(Apartment apartment, LocalDate checkInDate, Long nights, User guest) {
 	super();
 	this.apartment = apartment;
 	this.checkInDate = checkInDate;
@@ -69,10 +69,11 @@ public Double getTotalPrice() {
 public void setTotalPrice(Double totalPrice) {
 	this.totalPrice = totalPrice;
 }
-public Guest getGuest() {
+
+public User getGuest() {
 	return guest;
 }
-public void setGuest(Guest guest) {
+public void setGuest(User guest) {
 	this.guest = guest;
 }
 public ReservationStatus getReservationStatus() {

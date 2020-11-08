@@ -1,7 +1,7 @@
 package com.ftninformatika.jwd.modul3.wafepa.model;
 
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -16,8 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 @Entity
-
-public class Host {
+public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -28,19 +27,23 @@ public class Host {
 	private String lastName;
 	@Enumerated(EnumType.STRING)
 	private Gender gender;
-	@OneToMany(mappedBy="host",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	private List<Apartment> apartmentsForRent=new ArrayList<>();
+	@Enumerated (EnumType.STRING)
+	private Role role;
+	@OneToMany(mappedBy="host",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+	List<Apartment> apartmentsForRent;
+	@OneToMany(mappedBy = "guest",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+	List<Reservation> userReservations;
 	
-	public Host() {
-		super();
-	}
-	public Host(String username, String password, String firstName, String lastName, Gender gender) {
+	public User(String username, String password, String firstName, String lastName, Gender gender) {
 		super();
 		this.username = username;
 		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.gender = gender;
+	}
+	public User() {
+	
 	}
 	public Long getId() {
 		return id;
@@ -78,11 +81,23 @@ public class Host {
 	public void setGender(Gender gender) {
 		this.gender = gender;
 	}
+	public Role getRole() {
+		return role;
+	}
+	public void setRole(Role role) {
+		this.role = role;
+	}
 	public List<Apartment> getApartmentsForRent() {
 		return apartmentsForRent;
 	}
-	public void setApartmentsForRent(List<Apartment> apartments) {
-		this.apartmentsForRent = apartments;
+	public void setApartmentsForRent(List<Apartment> apartmentsForRent) {
+		this.apartmentsForRent = apartmentsForRent;
+	}
+	public List<Reservation> getUserReservations() {
+		return userReservations;
+	}
+	public void setUserReservations(List<Reservation> userReservations) {
+		this.userReservations = userReservations;
 	}
 	
 	

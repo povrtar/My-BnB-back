@@ -5,15 +5,15 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 
-import com.ftninformatika.jwd.modul3.wafepa.model.Guest;
+import com.ftninformatika.jwd.modul3.wafepa.model.User;
 import com.ftninformatika.jwd.modul3.wafepa.web.dto.UserPasswordChangeDto;
 
-public interface GuestService {
-	Optional<Guest> one(Long id);	
-	List<Guest> all();
-	Page<Guest> all(int pageNum);
-	Guest save(Guest guest);
+public interface UserService {
+	Optional<User> one(Long id);	
+	List<User> all();
+	Page<User> all(int pageNum);
+	User save(User administrator);
 	void delete(Long id);
-	Optional<Guest> byUsername(String username);
+	Optional<User> byUsername(String username);
 	boolean changePassword(Long id, UserPasswordChangeDto changeDto);
 }
